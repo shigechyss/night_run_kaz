@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>夜を駆ける 和恭編 第1話</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0f1e;--tx:#e8e4d6;--mute:#8d91ab;--cocoa:#c98f5a;--line:#2a3050;color-scheme:dark;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--tx);font-family:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif}
+#app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:0 22px 40px}
+header{padding:22px 0 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+header h1{margin:0;font-size:15px;font-weight:700;letter-spacing:.14em}
+header span{font-size:12px;color:var(--mute)}
+#story{flex:1;padding-top:22px;font-size:17px;line-height:2.1}
+#story p{margin:0 0 1.1em;animation:in .7s ease both}
+#story p.old{opacity:.62;animation:none}
+@keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+#tap{text-align:center;color:var(--cocoa);font-size:13px;padding:6px 0;animation:bl 1.6s ease-in-out infinite}
+@keyframes bl{50%{opacity:.25}}
+.choices{display:flex;flex-direction:column;gap:10px;margin-top:10px;animation:in .6s ease both}
+button{font:inherit;font-size:15px;line-height:1.7;text-align:left;color:var(--tx);background:transparent;border:1px solid var(--cocoa);border-radius:3px;padding:12px 14px;cursor:pointer}
+button:hover{background:#c98f5a1f}
+button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.end{margin-top:18px;padding:20px 16px;border-top:1px solid var(--cocoa);text-align:center;animation:in .8s ease both}
+.end h2{margin:0 0 4px;font-size:22px;letter-spacing:.14em}
+.end .n{font-size:13px;color:var(--mute);margin-bottom:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0 18px}
+.chips i{font-style:normal;font-size:12px;padding:3px 9px;border:1px solid var(--line);color:var(--mute);border-radius:12px}
+.chips i.on{border-color:var(--cocoa);color:var(--cocoa)}
+.end button{text-align:center}
+footer{font-size:11px;color:var(--mute);line-height:1.8;padding-top:26px}
+#ov{position:fixed;inset:0;z-index:9;background:var(--bg);display:grid;place-content:center;gap:14px;text-align:center;padding:24px}#ov[hidden]{display:none}#ov h1{margin:0;font-size:26px;letter-spacing:.16em}#ov p{margin:0;color:var(--mute);font-size:13px;line-height:1.9}#ov button{text-align:center}#snd{padding:2px 8px;font-size:15px;border-color:var(--line)}
+.tag{float:right;margin-left:10px;font-size:11px;color:var(--cocoa);border:1px solid var(--cocoa);border-radius:9px;padding:0 8px;line-height:1.7}button.read{border-color:var(--line);color:var(--mute)}button.read .tag{color:var(--mute);border-color:var(--line)}#rst,#rst2{display:block;margin-top:10px;font-size:12px;padding:4px 10px;border-color:var(--line);color:var(--mute)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app">
+ <header><h1>夜を駆ける　和恭編</h1><span>第1話　出会いの夜</span><button id="snd" aria-label="音のオン／オフ">🔇</button></header>
+ <main id="story" aria-live="polite"></main>
+ <footer>マルチエンディングのため、本編と異なるストーリーが含まれます。<button id="rst">選択肢の既読をリセット</button><button id="rst2">エンディング記録をリセット</button></footer>
+</div>
+<div id="ov"><h1>夜を駆ける　和恭編</h1><p>第1話　出会いの夜</p><p>風の音や効果音が鳴ります。<br>iPhoneはマナーモードだと鳴らないことがあります。</p><button id="on">音を出して始める</button><button id="off">音なしで始める</button></div>
+<script>
+(function(){
+const S={
+start:{t:["服屋を閉めて、バーへ向かう途中だった。深夜に近い通りは、昼の顔をすっかり落としている。","公園の方から、薄着の女の子が一人で歩いてくる。","店でデニムの棚の前に、何度も立っていた子だ。名前は塔子。学校が厳しい、という話を少しだけ聞いた。","上着も着ていない。この季節の夜に、それはない。"],
+ c:[["声をかける","talk"],["気づかないふりで通り過ぎる","e1"]]},
+e1:{end:"通り過ぎた夜",t:["俺は歩調を変えなかった。人の夜に口を出すのは、性に合わない。","背中は、角を曲がって消えた。","数日後、塔子は店に来て、いつもの棚を見ていた。目が合うと、彼女のほうから先に逸らした。","あの夜、何か言えたのだろうか。答えは、まだ出ていない。"]},
+talk:{t:["「こんな時間に、何してんの」","後ろから声をかけると、彼女の肩が跳ねた。振り返って、俺だと分かった瞬間、顔が少しゆるむ。","「……少し、歩いてただけ」","細い声だった。両腕が、小さく震えている。"],
+ c:[["黙って上着を脱ぐ","jacket"],["「家の人は知ってるの？」と聞く","ask"]]},
+ask:{t:["聞いた途端、彼女の目が足元に落ちた。しまった、と思う。","「……帰る」","背を向けかけた足が、行くのか止まるのか、決めかねている。"],
+ c:[["「待て。寒いだろ」と引き止める","jacket","asked"],["何も言わず、見送る","e2"]]},
+e2:{end:"閉じた扉",t:["引き止める言葉を、俺は選べなかった。","彼女は走るでもなく、ゆっくり夜道へ戻っていった。","聞かれたくないことは、誰にだってある。分かっていたはずなのに、真っ先に聞いてしまった。","次に店で会ったら、まず天気の話でもしよう。次が、あればの話だけど。"]},
+jacket:{t:[["asked","さっきの問いは、もう口にしないと決めた。"],"上着を脱いで、差し出す。","彼女は受け取らず、断る言葉を探している。「いいから着てろ」と、もう一度押しつけた。","袖の中に、指先まで隠れた。大きすぎて、少し笑える。「……ありがとう」","「俺は和恭。名前、言ってなかったな」"],
+ c:[["「ココアでも飲んでいけよ」","park"],["「家まで送ろうか」","walk"]]},
+walk:{end:"家の前まで",t:["並んで歩く。彼女は半歩うしろをついてくる。話さなくても、足音で隣にいると分かった。","ある角の手前で、彼女が止まる。「ここで、いい」。先の窓に、灯りが見える。","「上着、あしたでも店に持ってきて。デニムも、もうすぐ入るから」","うなずいた彼女は、一度だけ振り返ってから、家の方へ歩いていった。","約束にしては軽すぎる。でも、今夜の彼女には、そのくらいがちょうどいい。"]},
+park:{t:["公園前のコンビニで、缶のココアを二本買った。","ベンチで一本渡すと、彼女は袖の中から指を出して、両手で包んだ。","理由は聞かないことにした。かわりに店の話をする。冬物が入ること、あのデニムのサイズが戻ってくること。","「……覚えてたの？」","彼女がやっと、小さく声を出した。その時、通りかかった知り合いが足を止める。","「お、和恭。何、彼女？」","にやついた顔で、俺と彼女を見比べている。しつこい男だ。"],
+ c:[["「そうだよ」と笑う","run","lie"],["「ただの客だよ」と流す","calm"]]},
+run:{t:["「そうだよ。今から連れて帰るとこ」","彼女がぎょっとした顔で見上げる。口が動く前に、缶を二つとも空けてゴミ箱へ投げた。","手を取って、走り出す。振り払われたら、そこでやめるつもりだった。","でも、手は離れなかった。借りた上着の裾が、後ろで揺れている。","歩幅を落として振り返ると、彼女は息を切らして、ほんの少し笑っていた。"],next:"door"},
+calm:{t:["知り合いは「ふーん」と笑って、手を振って去っていった。","彼女がほっと息を吐くのが見えた。空いた缶を、二人でそっとベンチに置く。","「ここ、冷えるな。うち、すぐそこなんだ。あったかいとこ、行くか」","彼女は返事をしない。けれど、立ち上がった俺の後ろを、少し離れてついてきた。"],next:"door"},
+door:{t:["街外れのアパートの前で、彼女の足が止まった。","名前を知ったばかりの男の部屋だ。ためらうのは、当たり前だと思う。",["lie","「彼女」なんて嘘をついたのは、あの場を抜けるためだけだっただろうか。……今は、考えない。"],"「……私、帰らないと」","帰らなきゃいけない。でも、帰りたくない。その顔に、そう書いてあった。"],
+ c:[["「帰りたくなったら帰ればいい。何もしないよ」","room"],["「無理に入らなくていい。家まで送る」","walk"]]},
+room:{t:["散らかった部屋で、彼女は入口のそばに立ったまま動かない。「座れよ」と言うと、やっと腰を下ろした。","鍋でココアを溶かす。甘い湯気が上がる。","彼女は何も話さない。俺も、急かさない。気づけば、バーの時間が迫っていた。","置いていくのは無責任かもしれない。でも、俺がここにいる限り、彼女はずっと気を張ったままな気もする。"],
+ c:[["合鍵を渡して、出かける","e5","key"],["鍵は渡さず「今夜は好きに使え」と言う","e6","nokey"]]},
+e5:{next:"ep2",t:["引き出しから出した鍵を、テーブルに置く。「好きに使っていい。置いて帰っても、持っててもいい」","彼女は、鍵と俺の顔を交互に見た。「待って、」と言いかけて、続かない。","急かさずに待ったが、言葉は出てこなかった。「行ってくる」","階段を降りながら思う。戻った時、鍵は置かれているかもしれない。","それでもいい。帰れる場所がひとつ増えたと、彼女が思えたなら。"]},
+e6:{next:"ep2",t:["鍵は、引き出しにしまったままにした。","「今夜はここで寝てけ。俺は朝まで戻らない。出る時は、扉を引けば閉まるから」","「……鍵は？」","「それは、明日」","彼女はまばたきをして、ココアを両手で包み直した。「明日も、ココアある？」","「ある」と答えると、彼女は初めて、ちゃんと笑った。","バーのカウンターで、俺は何度も入口の扉を見た。朝帰れば、部屋にはもう誰もいないかもしれない。","それでも、明日の約束は、ちゃんとあった。"]},
+ep2:{ep:"第2話　鍵のある部屋",t:[["key","合鍵を回す音が、暗い部屋に小さく響くようになった。"],["nokey","三日目の夜、俺は結局、引き出しから鍵を出した。明日の約束より先に、これが要る気がした。"],"最初は週に一度。それが三日に一度になり、いつの間にか、毎晩になった。","帰ると、電気のついていない部屋の窓際に、塔子が座っている。「また来たの」と言っても、彼女はうなずくだけだ。帰れ、とは言えなかった。","ある夜、流しの食器が洗ってあった。冷蔵庫の中身が、少しだけ減っている。"],c:[["「明日の晩飯、頼んでいい？」","dinner","laugh"],["何も言わず、礼だけ言う","thanks"]]},
+dinner:{t:["「いつ帰ってくるか分からないのに？」","「残ってたら、食う」","彼女が、ふっと吹き出した。「今、笑った」と言うと、自分では気づいていなかった顔をした。"],next:"dawn"},
+thanks:{t:["「助かる」とだけ言った。","彼女は少し顔を上げて、すぐに目を逸らした。台所から、水の音がした。"],next:"dawn"},
+dawn:{t:["夜が明ける前に、彼女は家へ帰る。扉に手を添えて、音を立てずに閉める。その背中を見送る。","いつからか、帰っていく足取りのほうが重い気がした。","聞けば、答えてくれるのかもしれない。聞かなければ、ここへ来てくれるのかもしれない。"],next:"knock"},
+knock:{t:["数日後の明け方、珍しくバイトを早く切り上げて、部屋にいた。","階段を駆け上がる足音。扉の前で、鍵を探す手の音がする。震えているのが、扉越しにも分かった。","鍵が回る前に、俺は扉を開けた。"],c:[["「どうした」と声をかけ、頭に手を置く","stay"],["「親か？」と先に聞く","press","pressed"]]},
+press:{t:["彼女は唇を噛んで、首を横に振った。嘘だと分かった。","分かっているのに、答えを急がせた。泣き出した彼女を前に、自分の間の悪さを呪う。"],next:"stay"},
+stay:{t:[["pressed","「悪い。聞くのは、後でいい」"],"泣くなら、ストーブの前にしろ。風邪を引く。そう言って、中へ入れた。","毛布を肩にかけ、ココアを溶かす。いつもの甘い湯気が上がる。","「ちゃんと、ここに来たんだな」","「家には、戻れないのか」彼女がうなずく。それ以上は、聞かなかった。","ベッドを貸して、俺はソファで寝た。扉の向こうで、やがて寝息が聞こえた。"],c:[["「行ける日は、学校に行けよ」と言う","days","school"],["何も言わず、ここにいさせる","days"]]},
+days:{t:["その日から、塔子は俺の部屋で暮らし始めた。","朝になると部屋が片づき、食卓に飯が並ぶ。バイトで顔を合わせない日もある。「おかえり」と言われるのに、まだ慣れない。悪くない、と思っている自分にも。",["school","学校には、時々行っているらしい。"],"彼女は寂しいとは言わない。ただ、教室の話をする時だけ、目の置き場が定まらない。","俺は、恋人でも家族でもない。名前のつかない距離を、壊したくなかった。春が過ぎ、夏が来ても、それは変わらなかった。"],next:"slip"},
+slip:{t:["秋の終わり、彼女が引き出しの奥の紙切れを見つけた。","「見つけちゃったか」","母親の住所。インクが掠れて、続きは読めない。幼い頃の離婚も、親戚の家も、十四で出たことも、昔の知り合いの話みたいに話した。","「会いたくないの？」彼女が聞く。"],c:[["「今さら、何を話すんだよ」と笑う","slipA"],["「……会えるなら、会いたいのかもな」","slipB","wish"]]},
+slipA:{t:["笑って流した。声は、軽く出たと思う。","塔子は何も言わず、掠れた紙を俺の手に戻した。受け取った指先が、少しだけ冷たかった。","「……そっか」","それだけ言って、彼女は台所へ立った。水の音が、いつもより長く続いた。","紙は、引き出しの奥へ戻した。それきり、その話は出なかった。"],next:"birthday"},
+slipB:{t:["言った自分が、一番驚いた。","塔子は黙って、俺の顔を見た。それから、掠れた紙を、そっと俺の手に戻した。","「……そっか」","小さな声だった。けれど、何かを胸の中にしまうように、彼女はゆっくりうなずいた。","紙は、引き出しの奥へ戻した。それきり、その話は出なかった。"],next:"birthday"},
+birthday:{t:["十二月。テーブルに、小さなケーキがあった。","「二十歳、おめでとう」","ろうそくの火が、部屋の明かりを小さく揺らす。「来年は成人式だね」","「祝ってくれる親もいないし、俺には関係ないよ」","軽く言ったつもりだった。彼女の目が、一瞬だけ揺れた。",["wish","本当は、少しだけ関係あると思っている。それは、口に出せなかった。"]],next:"gone"},
+gone:{t:["数日後、部屋へ帰ると、塔子がいなかった。","彼女の服も、歯ブラシも、教科書もない。","テーブルに、短い置き手紙。礼と、詫びが一行ずつ。その横に、合鍵が置いてあった。","引き出しを開ける。掠れた住所の紙が、なくなっている。","行き先は、一つしか思い当たらない。"],c:[["夜行バスの乗り場へ、走る","e_chase","chase"],["追わない。ここで、待つ","e_wait","wait"]]},
+e_wait:{next:"ep3",t:["追えば、止めることになる気がした。止める資格が、俺にあるのか分からなかった。","ストーブをつけ、ココアを二杯溶かした。一つは、手をつけないまま冷めていく。","鍵は、テーブルの上に置いたままにした。いつ戻ってもいいように。","夜が明けても、扉は開かない。それでも俺は、鍵を引き出しにしまわなかった。"]},
+e_chase:{next:"ep3",t:["上着も掴まずに、部屋を飛び出した。","明るい繁華街を抜け、暗い住宅街を走る。息が切れても、足は止まらない。","乗り場に着いた時、大阪行きのバスは、ちょうど動き出していた。","暗い窓に、鞄を抱えた彼女の横顔が見えた気がした。気のせいかもしれない。","星の下で、俺は立ち尽くす。行き先は、掠れた住所の、その先。"]},
+ep3:{ep:"第3話　遠い電話",t:[["chase","バスのテールランプが見えなくなっても、しばらく動けなかった。"],["wait","扉は、朝になっても開かなかった。二日、三日と過ぎても、鍵はテーブルの上から動かない。"],"彼女のいない部屋は、思っていたより静かだった。","棚には、カップが二つ並んでいる。一つを洗えないまま、季節だけが進んだ。","ストーブの前の場所に、俺は座らない。座ってしまえば、そこに誰もいないことを、認めてしまう気がした。","大阪からは、手紙も電話も来ない。",["wish","会えるなら会いたい、と言ったのは俺だ。なのに、あの紙を持って探しに行ったのは、彼女のほうだった。"]],next:"friend"},
+friend:{t:["秋になって、知らない番号から電話が鳴った。","「塔子ちゃんの、友達なんですけど」","大阪で最初に彼女を泊めたという子は、言葉を選びながら話した。ちゃんと眠れていないようなこと。電話にも、ほとんど出ないこと。","「迷ったんですけど……和恭さんなら、出てくれるかもって」","彼女の新しい番号が、メモ帳に書き込まれた。"],c:[["すぐに、かける","call"],["かけない。それは、彼女が決めることだ","e_hold"]]},
+e_hold:{next:"ep4",nl:"二十年後へ",t:["番号を紙に書き写して、引き出しの奥にしまった。掠れた住所の紙があった、同じ場所に。","かけるのは簡単だ。それが一番ずるい気もした。","彼女が自分の足で決めたことを、俺の声で曲げたくなかった。","冬が来て、春が来た。引き出しは、一度も開けなかった。ストーブの前だけが、少し寒い。"]},
+call:{t:["コール音が、三度。","「、、、もしもし」","細くて、疲れた声だった。名前を叫びそうになるのを、息で押さえる。"],c:[["「今、どこにいる」","talk3","where"],["「ちゃんと、食って寝てるか」","talk3","care"]]},
+talk3:{t:[["care","「……大丈夫」彼女は答えた。早すぎる返事だった。"],["care","「今、どこにいるんだ」と、聞き直した。"],["where","「今、どこにいる」声が、思ったより強く出た。"],"少しの間のあと、彼女は言った。「……大阪」","一人か、と聞くと、うなずく気配がした。","「まだ、探してるのか」","答えは、なかった。それが答えだった。",["wish","あの紙を持ち出したのは、俺のためだったのだろう。そう思うと、胸の奥が妙に熱くなる。"]],c:[["「もういい。探さなくていい」","t1"],["「俺も、そっちへ行く」","t2"]]},
+t1:{t:["「探す必要はない。もういいから」","息が詰まる音がして、「ごめんなさい」と彼女は言った。","「謝らなくていい」","もう一度、「ごめんなさい」。何に謝っているのか、彼女自身も分からない声だった。","言うなら、今しかない。"],c:[["「戻ってこい」","e_return"],["「待ってる。いつでも、戻ってこい」","e_wait2"]]},
+t2:{t:["「大阪は広いだろ。一人で探すより、二人のほうがいい」","彼女は黙り込み、やがて、かすれた声で言った。","「来ないで。……自分で、決めたことだから」","電話の向こうで、車の音がした。彼女はもう、一人で歩いている。"],next:"e_respect"},
+e_return:{next:"ep4",nl:"二十年後へ",t:["「戻ってこい」","彼女の息が、止まった気配がした。","「……今の部屋、あと一年半、住む約束があるの。引き受けたから」","「それは、話せば」「ごめん」","電話は、そこで切れた。かけ直しても、もうつながらなかった。","彼女が決めたことだ。引き止める言葉は、喉の奥にしまった。"]},
+e_wait2:{next:"ep4",nl:"二十年後へ",t:["「待ってる。いつでも、戻ってこい」","しばらく、息の音だけが聞こえた。","「……うん」","約束とは言えない、小さな返事だった。それで十分だった。","電話を切ってから、ストーブをつけた。今夜は、ココアを二杯溶かす。","冷めてもいい。扉を叩く音がするまで、俺は待つ。"]},
+e_respect:{next:"ep4",nl:"二十年後へ",t:["「分かった」と言った。止めなかったのではない。止められなかったのでもない。","「でも、困ったら電話しろ。何時でもいい」","「……うん」","電話が切れる。部屋は静かで、星だけがよく見える。","彼女は、自分の足で夜を駆けていく。俺は、その背中に、扉を一枚だけ開けておく。"]},
+ep4:{ep:"最終章　二十年後",t:["あれから、二十年が過ぎた。","俺は四十になった。夜の仕事は今も続けている。カウンターの内側から見る夜は、あの頃よりずっと静かだ。",["at_e_return","「戻ってこい」と言った電話は、あれきり、つながらなかった。"],["at_e_wait2","「……うん」という小さな返事を、今も覚えている。扉を叩く音がする夜は、来なかった。"],["at_e_hold","かけなかった番号の紙は、引き出しの奥で黄ばんだ。かけなかったことを悔やむ夜も、悔やまない夜もある。"],["at_e_respect","「困ったら電話しろ」と言った。その電話は、一度も鳴らなかった。困らなかったのだと、思うことにしている。"],"掠れた住所の紙は、とうとう戻ってこなかった。母親の顔は、もう思い出せない。それでも、不思議と、寂しくはない。","閉店のあと、部屋へ帰る。電気をつけると、ストーブの前の場所は、あの頃のままだ。棚には、カップが二つ。","名前は、つけられないままだ。つけなくていいと、今は思う。ココアが温かかった夜が、確かにあった。それだけで、足りる。","窓を開けると、星が見える。","その時、扉のほうで、小さな音がした。","風かもしれない。隣の住人かもしれない。……足音のように聞こえたのは、俺の耳のせいだろうか。"],c:[["扉を、開けに行く","fin_a"],["気のせいにして、ココアを溶かす","fin_b"]]},
+fin_a:{end:"扉の向こう",t:["ドアノブに手をかける。金属が、冷たい。","息を吸う。夜の空気の匂いが、扉の隙間から入ってくる。","そこに誰がいても。誰もいなくても。","どちらにも言える言葉を、俺は一つだけ持っている。","「おかえり」","扉を、ゆっくり、引いた。"]},
+fin_b:{end:"二つ目のカップ",t:["気のせいだ、ということにした。","鍋で牛乳を温め、ココアを溶かす。甘い湯気が、静かな部屋に上がる。","カップは、二つ。一つは、湯気だけが立っている。","窓の外で、星が瞬いた。扉の向こうに、足音はない。","聞こえなくても、いい。ここは、帰ってこられる場所のままだから。","冷めるまで、窓辺で星を見ていた。"]}
+};
+const snd=(function(){
+ let ctx,m,amb,NB,on=false;
+ const MAP={talk:"step",jacket:"cloth",walk:"step",park:"can",run:"run",calm:"step",door:"door",room:"pour",e5:"key",e6:"door",e1:"step",knock:"door",stay:"pour",gone:"key",e_chase:"run",e_wait:"door",call:"tap",e_return:"door",e_wait2:"pour",fin_a:"door",fin_b:"pour"},IN=["room","e5","e6","ep2","stay","days","slip","birthday","gone","e_wait","ep3","friend","e_hold","e_return","e_wait2","ep4","fin_a","fin_b"];
+ function noise(t,d,type,fr,v,q){const s=ctx.createBufferSource();s.buffer=NB;const f=ctx.createBiquadFilter();f.type=type;f.frequency.value=fr;if(q)f.Q.value=q;const g=ctx.createGain();g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f);f.connect(g);g.connect(m);s.start(t,Math.random());s.stop(t+d+.05)}
+ function tone(t,fr,d,v,type){const o=ctx.createOscillator(),g=ctx.createGain();o.type=type||"sine";o.frequency.value=fr;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(m);o.start(t);o.stop(t+d+.05)}
+ const FX={tap:t=>tone(t,660,.12,.05),step:t=>{for(let k=0;k<4;k++)noise(t+k*.42,.12,"lowpass",300,.35)},run:t=>{for(let k=0;k<10;k++)noise(t+k*.2,.09,"lowpass",350,.4)},cloth:t=>noise(t,.5,"bandpass",1800,.25,.6),can:t=>{tone(t,2200,.05,.06,"square");noise(t+.05,.6,"highpass",4000,.12)},door:t=>{tone(t,85,.25,.5);noise(t,.15,"lowpass",600,.3)},pour:t=>noise(t,1.4,"bandpass",900,.15,2),key:t=>{tone(t,2400,.4,.07,"triangle");tone(t+.09,3100,.5,.06,"triangle")}};
+ function fx(n){if(!ctx||!on)return;FX[n](ctx.currentTime+.05)}
+ function start(){
+  if(ctx){return}
+  try{
+   ctx=new (window.AudioContext||window.webkitAudioContext)();m=ctx.createGain();m.gain.value=.8;m.connect(ctx.destination);
+   NB=ctx.createBuffer(1,ctx.sampleRate*2,ctx.sampleRate);const d=NB.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+   const s=ctx.createBufferSource();s.buffer=NB;s.loop=true;const f=ctx.createBiquadFilter();f.type="lowpass";f.frequency.value=420;amb=ctx.createGain();amb.gain.value=.08;s.connect(f);f.connect(amb);amb.connect(m);s.start();
+   const l=ctx.createOscillator(),lg=ctx.createGain();l.frequency.value=.12;lg.gain.value=.03;l.connect(lg);lg.connect(amb.gain);l.start();
+   const pg=ctx.createGain();pg.gain.value=.012;pg.connect(m);[110,164.8,220,277.2].forEach((fr,k)=>{const o=ctx.createOscillator();o.frequency.value=fr;o.detune.value=k*3;o.connect(pg);o.start()});
+   on=true;
+  }catch(e){on=false}
+ }
+ return{start:start,fx:fx,on:()=>on,
+  toggle(){if(!ctx){start();return}on=!on;m.gain.setTargetAtTime(on?.8:0,ctx.currentTime,.1);if(ctx.state==="suspended")ctx.resume()},
+  scene(id){if(!ctx||!on)return;amb.gain.setTargetAtTime(IN.indexOf(id)>=0?.02:.08,ctx.currentTime,1);if(MAP[id])fx(MAP[id])}};
+})();
+const bgm=(function(){
+ const SRC="bgm.mp4",VOL=.6;let a=null,t=null;
+ function mk(){if(a)return a;try{a=new Audio(SRC);a.loop=true;a.preload="auto"}catch(e){a=null}return a}
+ function sync(){if(a)a.muted=!snd.on()}
+ return{sync:sync,
+  prep(){const x=mk();if(!x)return;x.muted=true;const p=x.play();if(p&&p.then)p.then(()=>{x.pause();x.currentTime=0;sync()}).catch(()=>{})},
+  scene(id){if(id!=="fin_a"&&id!=="fin_b")return;const x=mk();if(!x)return;sync();x.volume=0;const p=x.play();if(p&&p.catch)p.catch(()=>{});clearInterval(t);let v=0;t=setInterval(()=>{v=Math.min(VOL,v+.03);x.volume=v;if(v>=VOL)clearInterval(t)},150)},
+  stop(){clearInterval(t);if(a){a.pause();try{a.currentTime=0}catch(e){}}}};
+})();
+const ENDS=["e1","e2","walk","fin_a","fin_b"];
+const $=s=>document.querySelector(s),box=$("#story");
+let f={},cur=null,i=0,reached=[],rd={};
+try{reached=JSON.parse(localStorage.getItem("yk1")||"[]")}catch(e){}
+try{rd=JSON.parse(localStorage.getItem("yk1r")||"{}")}catch(e){}
+function saveR(){try{localStorage.setItem("yk1r",JSON.stringify(rd))}catch(e){}}
+function save(){try{localStorage.setItem("yk1",JSON.stringify(reached))}catch(e){}}
+function go(id,flag){
+  f["at_"+id]=1;if(flag)f[flag]=1;
+  cur=S[id];cur.id=id;i=0;snd.scene(id);bgm.scene(id);if(cur.ep)document.querySelector("header span").textContent=cur.ep;
+  box.querySelectorAll("p").forEach(p=>p.classList.add("old"));
+  const old=box.querySelector(".choices");if(old)old.remove();
+  const q=box.querySelector(".sep");
+  step();
+}
+function line(){
+  let x=cur.t[i++];
+  while(x&&Array.isArray(x)&&!f[x[0]]){x=cur.t[i++]}
+  return Array.isArray(x)?x[1]:x;
+}
+function step(){
+  const t=$("#tap");if(t)t.remove();
+  box.querySelectorAll("p:not(.old)").forEach(p=>p.classList.add("old"));
+  const x=line();
+  if(x){const p=document.createElement("p");p.textContent=x;box.appendChild(p);
+    if(i<cur.t.length||cur.c||cur.next||cur.end)showTap();
+    window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});}
+  if(i>=cur.t.length&&!x||(x&&i>=cur.t.length)){after()}
+}
+function showTap(){
+  if(i>=cur.t.length)return;
+  const d=document.createElement("div");d.id="tap";d.textContent="▼ タップして進む";box.appendChild(d);
+}
+function after(){
+  const t=$("#tap");if(t)t.remove();
+  if(cur.c){
+    const w=document.createElement("div");w.className="choices";
+    cur.c.forEach((c,k)=>{const key=cur.id+":"+k,isR=!!rd[key],b=document.createElement("button");b.textContent=c[0];const tg=document.createElement("span");tg.className="tag";tg.textContent=isR?"既読":"未読";b.appendChild(tg);if(isR)b.className="read";b.onclick=()=>{snd.fx("tap");rd[key]=1;saveR();go(c[1],c[2])};w.appendChild(b)});
+    box.appendChild(w);
+  }else if(cur.next){
+    const w=document.createElement("div");w.className="choices";
+    const b=document.createElement("button");b.textContent=cur.nl||"続ける";b.onclick=()=>{snd.fx("tap");go(cur.next)};w.appendChild(b);box.appendChild(w);
+  }else if(cur.end){
+    if(reached.indexOf(cur.id)<0){reached.push(cur.id);save()}
+    const e=document.createElement("div");e.className="end";
+    e.innerHTML='<h2></h2><div class="n"></div><div class="chips"></div><button>最初から読む</button>';
+    e.querySelector("h2").textContent="「"+cur.end+"」";
+    e.querySelector(".n").textContent="エンディング "+reached.filter(x=>ENDS.indexOf(x)>=0).length+" / "+ENDS.length;
+    const ch=e.querySelector(".chips");
+    ENDS.forEach(id=>{const c=document.createElement("i");const ok=reached.indexOf(id)>=0;c.textContent=ok?S[id].end:"？？？";if(ok)c.className="on";ch.appendChild(c)});
+    e.querySelector("button").onclick=restart;
+    box.appendChild(e);
+  }
+  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+function restart(){bgm.stop();box.innerHTML="";f={};document.querySelector("header span").textContent="第1話　出会いの夜";window.scrollTo(0,0);go("start")}
+document.addEventListener("click",e=>{
+  if(e.target.closest("button"))return;
+  if(cur&&$("#tap"))step();
+});
+document.addEventListener("keydown",e=>{if((e.key===" "||e.key==="Enter")&&cur&&$("#tap")&&document.activeElement===document.body){e.preventDefault();step()}});
+function rbtn(id,label,fn){const b=$(id);let t;b.onclick=()=>{clearTimeout(t);if(b.dataset.a){fn();delete b.dataset.a;b.textContent="リセットしました";t=setTimeout(()=>b.textContent=label,2000)}else{b.dataset.a=1;b.textContent="もう一度押すと、消えます";t=setTimeout(()=>{delete b.dataset.a;b.textContent=label},3000)}}}
+rbtn("#rst","選択肢の既読をリセット",()=>{rd={};saveR()});
+rbtn("#rst2","エンディング記録をリセット",()=>{reached=[];save()});
+const sb=$("#snd"),ov=$("#ov");
+function lab(){sb.textContent=snd.on()?"🔊":"🔇"}
+sb.onclick=()=>{snd.toggle();bgm.sync();lab()};
+$("#on").onclick=()=>{snd.start();bgm.prep();ov.hidden=true;lab();restart()};
+$("#off").onclick=()=>{bgm.prep();ov.hidden=true;lab();restart()};
+})();
+</script>
+</body>
+</html>
