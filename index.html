@@ -120,12 +120,12 @@ const snd=(function(){
   scene(id){if(!ctx||!on)return;amb.gain.setTargetAtTime(IN.indexOf(id)>=0?.02:.08,ctx.currentTime,1);if(MAP[id])fx(MAP[id])}};
 })();
 const bgm=(function(){
- const SRC="bgm.mp3",VOL=.6;let a=null,t=null;
+ const SRC="bgm.mp4",VOL=.6;let a=null,t=null;
  function mk(){if(a)return a;try{a=new Audio(SRC);a.loop=true;a.preload="auto"}catch(e){a=null}return a}
  function sync(){if(a)a.muted=!snd.on()}
  return{sync:sync,
   prep(){const x=mk();if(!x)return;x.muted=true;const p=x.play();if(p&&p.then)p.then(()=>{x.pause();x.currentTime=0;sync()}).catch(()=>{})},
-  scene(id){if(id!=="fin_a"&&id!=="fin_b")return;const x=mk();if(!x)return;sync();x.volume=0;const p=x.play();if(p&&p.catch)p.catch(()=>{});clearInterval(t);let v=0;t=setInterval(()=>{v=Math.min(VOL,v+.03);x.volume=v;if(v>=VOL)clearInterval(t)},150)},
+  scene(id){if(id!=="ep4"&&id!=="fin_a"&&id!=="fin_b")return;const x=mk();if(!x)return;sync();if(!x.paused)return;x.volume=0;const p=x.play();if(p&&p.catch)p.catch(()=>{});clearInterval(t);let v=0;t=setInterval(()=>{v=Math.min(VOL,v+.03);x.volume=v;if(v>=VOL)clearInterval(t)},150)},
   stop(){clearInterval(t);if(a){a.pause();try{a.currentTime=0}catch(e){}}}};
 })();
 const ENDS=["e1","e2","walk","fin_a","fin_b"];
