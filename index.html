@@ -120,7 +120,7 @@ const snd=(function(){
   scene(id){if(!ctx||!on)return;amb.gain.setTargetAtTime(IN.indexOf(id)>=0?.02:.08,ctx.currentTime,1);if(MAP[id])fx(MAP[id])}};
 })();
 const bgm=(function(){
- const SRC="bgm.mp4",VOL=.6;let a=null,t=null;
+ const SRC="bgm.mp3",VOL=.6;let a=null,t=null;
  function mk(){if(a)return a;try{a=new Audio(SRC);a.loop=true;a.preload="auto"}catch(e){a=null}return a}
  function sync(){if(a)a.muted=!snd.on()}
  return{sync:sync,
