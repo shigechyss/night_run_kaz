@@ -34,6 +34,7 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 footer{font-size:11px;color:var(--mute);line-height:1.8;padding-top:26px}
 #ov{position:fixed;inset:0;z-index:9;background:var(--bg);display:grid;place-content:center;gap:14px;text-align:center;padding:24px}#ov[hidden]{display:none}#ov h1{margin:0;font-size:26px;letter-spacing:.16em}#ov p{margin:0;color:var(--mute);font-size:13px;line-height:1.9}#ov button{text-align:center}#snd{padding:2px 8px;font-size:15px;border-color:var(--line)}
 .tag{float:right;margin-left:10px;font-size:11px;color:var(--cocoa);border:1px solid var(--cocoa);border-radius:9px;padding:0 8px;line-height:1.7}button.read{border-color:var(--line);color:var(--mute)}button.read .tag{color:var(--mute);border-color:var(--line)}#rst,#rst2{display:block;margin-top:10px;font-size:12px;padding:4px 10px;border-color:var(--line);color:var(--mute)}
+#cr{position:fixed;inset:0;z-index:8;background:var(--bg);overflow:hidden}#cr[hidden]{display:none}#roll{position:absolute;left:0;right:0;top:0;text-align:center;padding:0 24px;line-height:2.2;will-change:transform}#roll h1{font-size:26px;letter-spacing:.16em;margin:0 0 3em}#roll h3{font-size:13px;color:var(--cocoa);letter-spacing:.3em;margin:3.2em 0 .8em;font-weight:400}#roll p{margin:0;font-size:16px}#roll .s{color:var(--mute);font-size:13px}#skip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:14px;z-index:9;font-size:13px;padding:4px 12px;background:var(--bg)}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
@@ -44,6 +45,7 @@ footer{font-size:11px;color:var(--mute);line-height:1.8;padding-top:26px}
  <footer>マルチエンディングのため、本編と異なるストーリーが含まれます。<button id="rst">選択肢の既読をリセット</button><button id="rst2">エンディング記録をリセット</button></footer>
 </div>
 <div id="ov"><h1>夜を駆ける　和恭編</h1><p>第1話　出会いの夜</p><p>風の音や効果音が鳴ります。<br>iPhoneはマナーモードだと鳴らないことがあります。</p><button id="on">音を出して始める</button><button id="off">音なしで始める</button></div>
+<div id="cr" hidden><button id="skip">スキップ</button><div id="roll"><h1>夜を駆ける　和恭編</h1><h3>原作</h3><p>『夜を駆ける　前編』</p><p>『夜を駆ける　後編』</p><p>『夜を駆ける　大阪編　前編』</p><p>『夜を駆ける　大阪編　後半』</p><p>『夜を駆ける　最終章』</p><p>『あとがき』</p><p>&nbsp;</p><p>作　蛍</p><p class="s">note.com/nifty_tucan8721</p><h3>本作</h3><p>企画・制作　しげちーSS</p><p>制作協力　Claude（Anthropic）</p><h3>音</h3><p>BGM　「夜を駆ける星の下」</p><p class="s">制作　しげちーSS ／ Gemini</p><p>効果音　ゲーム内で生成</p><p>フォント　Shippori Mincho</p><h3>お断り</h3><p>本作は、蛍さんの許可を得て制作した、</p><p>原作をもとにしたファン創作です。</p><p>マルチエンディングのため、</p><p>本編と異なるストーリーが含まれます。</p><p>&nbsp;</p><p>&nbsp;</p><p>ご参加いただき、ありがとうございました。</p><p>&nbsp;</p><p>夜は、まだ続いている。</p></div></div>
 <script>
 (function(){
 const S={
@@ -130,7 +132,7 @@ const bgm=(function(){
 })();
 const ENDS=["e1","e2","walk","fin_a","fin_b"];
 const $=s=>document.querySelector(s),box=$("#story");
-let f={},cur=null,i=0,reached=[],rd={};
+let f={},cur=null,i=0,reached=[],rd={},ca=null,ct=null;
 try{reached=JSON.parse(localStorage.getItem("yk1")||"[]")}catch(e){}
 try{rd=JSON.parse(localStorage.getItem("yk1r")||"{}")}catch(e){}
 function saveR(){try{localStorage.setItem("yk1r",JSON.stringify(rd))}catch(e){}}
@@ -173,17 +175,17 @@ function after(){
   }else if(cur.end){
     if(reached.indexOf(cur.id)<0){reached.push(cur.id);save()}
     const e=document.createElement("div");e.className="end";
-    e.innerHTML='<h2></h2><div class="n"></div><div class="chips"></div><button>最初から読む</button>';
+    e.innerHTML='<h2></h2><div class="n"></div><div class="chips"></div><button>最初から読む</button> <button id="crb">クレジット</button>';
     e.querySelector("h2").textContent="「"+cur.end+"」";
     e.querySelector(".n").textContent="エンディング "+reached.filter(x=>ENDS.indexOf(x)>=0).length+" / "+ENDS.length;
     const ch=e.querySelector(".chips");
     ENDS.forEach(id=>{const c=document.createElement("i");const ok=reached.indexOf(id)>=0;c.textContent=ok?S[id].end:"？？？";if(ok)c.className="on";ch.appendChild(c)});
-    e.querySelector("button").onclick=restart;
+    e.querySelector("button").onclick=restart;e.querySelector("#crb").onclick=playCr;if(cur.id==="fin_a"||cur.id==="fin_b"){clearTimeout(ct);ct=setTimeout(playCr,5000)}
     box.appendChild(e);
   }
   window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
 }
-function restart(){bgm.stop();box.innerHTML="";f={};document.querySelector("header span").textContent="第1話　出会いの夜";window.scrollTo(0,0);go("start")}
+function restart(){clearTimeout(ct);stopCr();bgm.stop();box.innerHTML="";f={};document.querySelector("header span").textContent="第1話　出会いの夜";window.scrollTo(0,0);go("start")}
 document.addEventListener("click",e=>{
   if(e.target.closest("button"))return;
   if(cur&&$("#tap"))step();
@@ -192,6 +194,10 @@ document.addEventListener("keydown",e=>{if((e.key===" "||e.key==="Enter")&&cur&&
 function rbtn(id,label,fn){const b=$(id);let t;b.onclick=()=>{clearTimeout(t);if(b.dataset.a){fn();delete b.dataset.a;b.textContent="リセットしました";t=setTimeout(()=>b.textContent=label,2000)}else{b.dataset.a=1;b.textContent="もう一度押すと、消えます";t=setTimeout(()=>{delete b.dataset.a;b.textContent=label},3000)}}}
 rbtn("#rst","選択肢の既読をリセット",()=>{rd={};saveR()});
 rbtn("#rst2","エンディング記録をリセット",()=>{reached=[];save()});
+const cr=$("#cr"),roll=$("#roll");
+function stopCr(){clearTimeout(ct);if(ca){ca.cancel();ca=null}cr.hidden=true}
+function playCr(){clearTimeout(ct);if(ca){ca.cancel();ca=null}cr.hidden=false;const vh=window.innerHeight,h=roll.offsetHeight;ca=roll.animate([{transform:"translateY("+vh+"px)"},{transform:"translateY("+(-h)+"px)"}],{duration:(h+vh)/38*1000,easing:"linear",fill:"forwards"});ca.onfinish=()=>{ct=setTimeout(stopCr,1200)}}
+$("#skip").onclick=stopCr;
 const sb=$("#snd"),ov=$("#ov");
 function lab(){sb.textContent=snd.on()?"🔊":"🔇"}
 sb.onclick=()=>{snd.toggle();bgm.sync();lab()};
