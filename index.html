@@ -35,16 +35,18 @@ footer{font-size:11px;color:var(--mute);line-height:1.8;padding-top:26px}
 #ov{position:fixed;inset:0;z-index:9;background:var(--bg);display:grid;place-content:center;gap:14px;text-align:center;padding:24px}#ov[hidden]{display:none}#ov h1{margin:0;font-size:26px;letter-spacing:.16em}#ov p{margin:0;color:var(--mute);font-size:13px;line-height:1.9}#ov button{text-align:center}#snd{padding:2px 8px;font-size:15px;border-color:var(--line)}
 .tag{float:right;margin-left:10px;font-size:11px;color:var(--cocoa);border:1px solid var(--cocoa);border-radius:9px;padding:0 8px;line-height:1.7}button.read{border-color:var(--line);color:var(--mute)}button.read .tag{color:var(--mute);border-color:var(--line)}#rst,#rst2{display:block;margin-top:10px;font-size:12px;padding:4px 10px;border-color:var(--line);color:var(--mute)}
 #cr{position:fixed;inset:0;z-index:8;background:var(--bg);overflow:hidden}#cr[hidden]{display:none}#roll{position:absolute;left:0;right:0;top:0;text-align:center;padding:0 24px;line-height:2.2;will-change:transform}#roll h1{font-size:26px;letter-spacing:.16em;margin:0 0 3em}#roll h3{font-size:13px;color:var(--cocoa);letter-spacing:.3em;margin:3.2em 0 .8em;font-weight:400}#roll p{margin:0;font-size:16px}#roll .s{color:var(--mute);font-size:13px}#skip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:14px;z-index:9;font-size:13px;padding:4px 12px;background:var(--bg)}
+header{flex-wrap:wrap}.hb{font-size:13px;padding:2px 8px;border-color:var(--line)}#rec{position:fixed;inset:0;z-index:10;background:var(--bg);overflow:auto;padding:24px 22px 40px}#rec[hidden]{display:none}.rc{max-width:520px;margin:0 auto}#rec h2{font-size:20px;letter-spacing:.14em;margin:18px 0 4px}#rec .pg{font-size:13px;color:var(--mute);margin-bottom:16px}#rec ol{list-style:none;padding:0;margin:0 0 22px}#rec li{padding:9px 12px;border:1px solid var(--line);border-radius:3px;margin-bottom:8px;font-size:15px}#rec li.on{border-color:var(--cocoa)}#rec li span{color:var(--mute);font-size:12px;margin-right:10px}#rec .bn{border:1px solid var(--line);border-radius:3px;padding:22px 14px;text-align:center;color:var(--mute);font-size:14px;line-height:1.9}#rec .bn img{max-width:100%;border-radius:3px;display:block;margin:0 auto 12px}#rec a{color:var(--cocoa);font-size:14px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
 <div id="app">
- <header><h1>夜を駆ける　和恭編</h1><span>第1話　出会いの夜</span><button id="snd" aria-label="音のオン／オフ">🔇</button></header>
+ <header><h1>夜を駆ける　和恭編</h1><span>第1話　出会いの夜</span><button id="recb" class="hb">記録</button><button id="snd" aria-label="音のオン／オフ">🔇</button></header>
  <main id="story" aria-live="polite"></main>
  <footer>マルチエンディングのため、本編と異なるストーリーが含まれます。<button id="rst">選択肢の既読をリセット</button><button id="rst2">エンディング記録をリセット</button></footer>
 </div>
-<div id="ov"><h1>夜を駆ける　和恭編</h1><p>第1話　出会いの夜</p><p>風の音や効果音が鳴ります。<br>iPhoneはマナーモードだと鳴らないことがあります。</p><button id="on">音を出して始める</button><button id="off">音なしで始める</button></div>
+<div id="ov"><h1>夜を駆ける　和恭編</h1><p>第1話　出会いの夜</p><p>風の音や効果音が鳴ります。<br>iPhoneはマナーモードだと鳴らないことがあります。</p><button id="on">音を出して始める</button><button id="off">音なしで始める</button><button id="rec0">エンディング記録</button></div>
+<div id="rec" hidden><div class="rc"><button id="recx">閉じる</button><h2>エンディング記録</h2><div class="pg" id="recpg"></div><ol id="recl"></ol><div class="bn" id="recbn"></div></div></div>
 <div id="cr" hidden><button id="skip">スキップ</button><div id="roll"><h1>夜を駆ける　和恭編</h1><h3>原作</h3><p>『夜を駆ける　前編』</p><p>『夜を駆ける　後編』</p><p>『夜を駆ける　大阪編　前編』</p><p>『夜を駆ける　大阪編　後半』</p><p>『夜を駆ける　最終章』</p><p>『あとがき』</p><p>&nbsp;</p><p>作　蛍</p><p class="s">note.com/nifty_tucan8721</p><h3>本作</h3><p>企画・制作　しげちーSS</p><p>制作協力　Claude（Anthropic）</p><h3>音</h3><p>BGM　「夜を駆ける星の下」</p><p class="s">制作　しげちーSS ／ Gemini</p><p>効果音　ゲーム内で生成</p><p>フォント　Shippori Mincho</p><h3>お断り</h3><p>本作は、蛍さんの許可を得て制作した、</p><p>原作をもとにしたファン創作です。</p><p>マルチエンディングのため、</p><p>本編と異なるストーリーが含まれます。</p><p>&nbsp;</p><p>&nbsp;</p><p>ご参加いただき、ありがとうございました。</p><p>&nbsp;</p><p>夜は、まだ続いている。</p></div></div>
 <script>
 (function(){
@@ -177,7 +179,7 @@ function after(){
     const e=document.createElement("div");e.className="end";
     e.innerHTML='<h2></h2><div class="n"></div><div class="chips"></div><button>最初から読む</button> <button id="crb">クレジット</button>';
     e.querySelector("h2").textContent="「"+cur.end+"」";
-    e.querySelector(".n").textContent="エンディング "+reached.filter(x=>ENDS.indexOf(x)>=0).length+" / "+ENDS.length;
+    e.querySelector(".n").textContent="エンディング "+reached.filter(x=>ENDS.indexOf(x)>=0).length+" / "+ENDS.length+(ENDS.every(x=>reached.indexOf(x)>=0)?"　全達成！特典画像が解放されました（右上の「記録」から見られます）":"");
     const ch=e.querySelector(".chips");
     ENDS.forEach(id=>{const c=document.createElement("i");const ok=reached.indexOf(id)>=0;c.textContent=ok?S[id].end:"？？？";if(ok)c.className="on";ch.appendChild(c)});
     e.querySelector("button").onclick=restart;e.querySelector("#crb").onclick=playCr;if(cur.id==="fin_a"||cur.id==="fin_b"){e.querySelectorAll("button").forEach(b=>b.hidden=true);const nt=document.createElement("div");nt.className="n";nt.id="crn";nt.textContent="エンドロールが始まります…";e.appendChild(nt);clearTimeout(ct);ct=setTimeout(playCr,2000)}
@@ -198,6 +200,17 @@ const cr=$("#cr"),roll=$("#roll");
 function stopCr(){clearTimeout(ct);if(ca){ca.cancel();ca=null}cr.hidden=true;document.querySelectorAll(".end button").forEach(b=>b.hidden=false);const nn=$("#crn");if(nn)nn.remove()}
 function playCr(){clearTimeout(ct);if(ca){ca.cancel();ca=null}cr.hidden=false;const vh=window.innerHeight,h=roll.offsetHeight;ca=roll.animate([{transform:"translateY("+vh+"px)"},{transform:"translateY("+(-h)+"px)"}],{duration:(h+vh)/38*1000,easing:"linear",fill:"forwards"});ca.onfinish=()=>{ct=setTimeout(stopCr,1200)}}
 $("#skip").onclick=stopCr;
+const BONUS="bonus.png",rec=$("#rec");
+function showRec(){
+ const done=ENDS.filter(id=>reached.indexOf(id)>=0).length,all=done===ENDS.length;
+ $("#recpg").textContent="達成　"+done+" / "+ENDS.length;
+ const ol=$("#recl");ol.innerHTML="";
+ ENDS.forEach((id,k)=>{const ok=reached.indexOf(id)>=0,li=document.createElement("li"),n=document.createElement("span");n.textContent=String(k+1).padStart(2,"0");li.appendChild(n);li.appendChild(document.createTextNode(ok?S[id].end:"？？？"));if(ok)li.className="on";ol.appendChild(li)});
+ const bn=$("#recbn");bn.innerHTML="";
+ if(all){const im=new Image(),msg=document.createElement("div"),a=document.createElement("a");im.alt="特典画像";im.src=BONUS;msg.textContent="全エンディング達成、おめでとうございます。";a.href=BONUS;a.download=BONUS;a.textContent="画像を保存する";a.style.display="block";a.style.marginTop="10px";im.onerror=()=>{im.remove();a.remove();msg.textContent="全エンディング達成！特典画像は準備中です。"};bn.appendChild(im);bn.appendChild(msg);bn.appendChild(a)}
+ else{bn.textContent="すべてのエンディングを見ると、特典画像が見られます。"}
+ rec.hidden=false;rec.scrollTop=0}
+$("#recb").onclick=showRec;$("#rec0").onclick=showRec;$("#recx").onclick=()=>{rec.hidden=true};
 const sb=$("#snd"),ov=$("#ov");
 function lab(){sb.textContent=snd.on()?"🔊":"🔇"}
 sb.onclick=()=>{snd.toggle();bgm.sync();lab()};
