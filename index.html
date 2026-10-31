@@ -180,7 +180,7 @@ function after(){
     e.querySelector(".n").textContent="エンディング "+reached.filter(x=>ENDS.indexOf(x)>=0).length+" / "+ENDS.length;
     const ch=e.querySelector(".chips");
     ENDS.forEach(id=>{const c=document.createElement("i");const ok=reached.indexOf(id)>=0;c.textContent=ok?S[id].end:"？？？";if(ok)c.className="on";ch.appendChild(c)});
-    e.querySelector("button").onclick=restart;e.querySelector("#crb").onclick=playCr;if(cur.id==="fin_a"||cur.id==="fin_b"){clearTimeout(ct);ct=setTimeout(playCr,5000)}
+    e.querySelector("button").onclick=restart;e.querySelector("#crb").onclick=playCr;if(cur.id==="fin_a"||cur.id==="fin_b"){e.querySelectorAll("button").forEach(b=>b.hidden=true);const nt=document.createElement("div");nt.className="n";nt.id="crn";nt.textContent="エンドロールが始まります…";e.appendChild(nt);clearTimeout(ct);ct=setTimeout(playCr,2000)}
     box.appendChild(e);
   }
   window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
@@ -195,7 +195,7 @@ function rbtn(id,label,fn){const b=$(id);let t;b.onclick=()=>{clearTimeout(t);if
 rbtn("#rst","選択肢の既読をリセット",()=>{rd={};saveR()});
 rbtn("#rst2","エンディング記録をリセット",()=>{reached=[];save()});
 const cr=$("#cr"),roll=$("#roll");
-function stopCr(){clearTimeout(ct);if(ca){ca.cancel();ca=null}cr.hidden=true}
+function stopCr(){clearTimeout(ct);if(ca){ca.cancel();ca=null}cr.hidden=true;document.querySelectorAll(".end button").forEach(b=>b.hidden=false);const nn=$("#crn");if(nn)nn.remove()}
 function playCr(){clearTimeout(ct);if(ca){ca.cancel();ca=null}cr.hidden=false;const vh=window.innerHeight,h=roll.offsetHeight;ca=roll.animate([{transform:"translateY("+vh+"px)"},{transform:"translateY("+(-h)+"px)"}],{duration:(h+vh)/38*1000,easing:"linear",fill:"forwards"});ca.onfinish=()=>{ct=setTimeout(stopCr,1200)}}
 $("#skip").onclick=stopCr;
 const sb=$("#snd"),ov=$("#ov");
